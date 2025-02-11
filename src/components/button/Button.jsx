@@ -1,9 +1,8 @@
+import "./Button.scss";
 
-import './Button.scss'
-
-const Button = ({ children, className = "", ...props }) => {
+const Button = ({ children, className = "", onClick, type = "button" }) => {
   return (
-    <button className={`button ${className}`} {...props} >
+    <button className={`button ${className}`} onClick={onClick} type={type}>
       {children}
     </button>
   );

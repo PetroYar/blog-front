@@ -1,0 +1,13 @@
+@import "/src/style.scss";
+
+.input{
+  display: flex;
+  flex-direction: column;
+  gap: toRem(10);
+  label{
+    text-transform: capitalize;
+  }
+  input{
+    padding: toRem(5);
+  }
+}

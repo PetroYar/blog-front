@@ -8,7 +8,7 @@ const Login = () => {
     <form className="login">
       <Input label={'імя'} />
       <Input label={'пароль'} />
-      <Button>підтвердити</Button>
+      <Button>підтвердитиb</Button>
     </form>
   );
 };

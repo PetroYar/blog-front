@@ -2,19 +2,16 @@
 @import "./variable.scss";
 @import "../scss/variable.scss";
 
-
 $containerWidth: $maxWidthContainer + $containerPadding;
 @function em($px, $current: 16) {
   $result: math.div($px, $current) + em;
   @return $result;
 }
-// Брейк-поїнти
-$pc: em(
-  $containerWidth
-); // ПК, ноутбуки, деякі планшети у горизонтальному положенні
-$tablet: em(991.98); // Планшети, деякі телефони в горизонтальному положенні
-$mobile: em(767.98); // Телефони L
-$mobileSmall: em(540); // Телефони S
+
+$pc: em($containerWidth);
+$tablet: em(991.98);
+$mobile: em(767.98);
+$mobileSmall: em(540);
 
 @function toRem($num1, $num2: 16) {
   $rez: math.div($num1, $num2) + rem;
@@ -25,7 +22,6 @@ $mobileSmall: em(540); // Телефони S
   @return $rez;
 }
 
-// Адаптивна властивість (clamp)
 @mixin adaptiveValue(
   $property,
   $startSize,
@@ -41,19 +37,15 @@ $mobileSmall: em(540); // Телефони S
     $minSize: 0.000001;
   }
 
-  // Для calc();
   $addSize: math.div($startSize - $minSize, 16);
 
   @if ($widthFrom == $containerWidth and $maxWidthContainer == 0) {
     $widthFrom: $maxWidth;
   }
 
-  // Брейк-поїнти в EM
   $widthFromMedia: toEm($widthFrom);
   $widthToMedia: toEm($widthTo);
 
-  // Формула плаваючого значення
-  // Источник: https://css-tricks.com/linearly-scale-font-size-with-css-clamp-based-on-the-viewport/
   $slope: math.div(($startSize - $minSize), ($widthFrom - $widthTo));
   $yIntersection: -$widthTo * $slope + $minSize;
   @if ($yIntersection==0) {
@@ -61,10 +53,8 @@ $mobileSmall: em(540); // Телефони S
   }
   $flyValue: #{toRem($yIntersection)}" + " #{$slope * 100}vw;
 
-  // Отримання значення властивості
   $propertyValue: #{"clamp(" toRem($minSize) "," $flyValue "," toRem($startSize)
     ")"};
-  // Якщо негативні значення
   @if ($minSize > $startSize) {
     $propertyValue: #{"clamp("
       toRem($startSize)
@@ -75,19 +65,15 @@ $mobileSmall: em(540); // Телефони S
       ")"};
   }
 
-  // Встановлюємо значення за замовчуванням
   @if $keepSize != 1 and $keepSize != 3 {
     @media (min-width: $widthFromMedia) {
       #{$property}: toRem($startSize);
     }
   }
-  // Адаптуємо розмір у проміжку між зазначеними ширинами в'юпорту
   @media (min-width: $widthToMedia) and (max-width: $widthFromMedia) {
-    // Якщо підтримується clamp();
     @supports (#{$property}: $propertyValue) {
       #{$property}: $propertyValue;
     }
-    // Якщо не підтримується clamp();
     @supports not (#{$property}: $propertyValue) {
       #{$property}: calc(
         #{toRem($minSize)} + #{$addSize} * (100vw - #{toRem($widthTo)}) / #{math.div(
@@ -104,13 +90,23 @@ $mobileSmall: em(540); // Телефони S
   }
 }
 
-@mixin absoluteCenter(){
+@mixin absoluteCenter() {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
 }
 
-@mixin sectionMargin(){
-  @include adaptiveValue("margin-bottom",70 ,30 );
+@mixin sectionMargin() {
+  @include adaptiveValue("margin-bottom", 70, 30);
+}
+
+@mixin flexCenter($row: false) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @if $row {
+    flex-direction: column;
+  }
 }

@@ -23,6 +23,7 @@ const Register = () => {
           {showPassword ? <FaEyeSlash /> : <FaEye />}
         </button>
       </div>
+      
       <div className="auth-form__buttons">
         <Button>Зареєструватися</Button>
         <Link className="auth-form__link" to={"/login"}>
